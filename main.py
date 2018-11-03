@@ -2,7 +2,7 @@ from flask import Flask, request, redirect, render_template
 import cgi
 import os
 import jinja2
-import re
+
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
@@ -55,26 +55,26 @@ def add():
 
     #check for invalid email
     if email == "":
-        email_error = " "
-    elif "." not in email: 
-        email_error = "Your email must contain one '.' character."
+        pass
     elif len(email) <= 3 or len(email) > 20:
         email_error = "email must be between 3 and 20 characters long."
     elif " " in email:
         email_error = "Your email cannot contain any spaces."
     elif "@" not in email:
         email_error = "Your email must contain one @ character."
+    elif "." not in email: 
+        email_error = "Your email must contain one '.' character."
         
 
+    # if input is valid, show welcome page otherwise show error information in home page
     if not username_error and not password_error and not verify_error and not email_error:
         return render_template('welcome.html', username = username)
     else:
         return render_template('home.html', 
-        username = username,
-        username_error = username_error,
+        username = username, username_error = username_error,
         password_error = password_error,
         verify_error = verify_error,
-        email = email,
-        email_error = email_error)
+        email = email, email_error = email_error)
 
-app.run()
+if __name__ == "__main__":
+    app.run()
